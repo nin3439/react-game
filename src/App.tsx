@@ -1,8 +1,15 @@
 import React from 'react';
-import './App.css';
+import Main from './components/Main/Main';
+import Footer from './components/Footer/Footer';
+import classes from './App.module.scss';
 
 function App() {
-  return <div>hello world</div>;
+  return (
+    <div className={classes.app}>
+      <Main />
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
