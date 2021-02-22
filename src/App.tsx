@@ -1,14 +1,16 @@
 import React from 'react';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
-import classes from './App.module.scss';
+import { Box } from '@material-ui/core';
+import { useStyles } from './AppMaterialStyles';
 
 function App() {
+  const classMaterial: Record<'root', string> = useStyles();
   return (
-    <div className={classes.app}>
+    <Box className={classMaterial.root}>
       <Main />
       <Footer />
-    </div>
+    </Box>
   );
 }
 

@@ -6,6 +6,7 @@ import {
   Typography,
   DialogContent,
   DialogActions,
+  Box,
 } from '@material-ui/core/';
 
 const Rules = () => {
@@ -17,7 +18,7 @@ const Rules = () => {
     setOpen(false);
   };
   return (
-    <div>
+    <Box>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Правила
       </Button>
@@ -25,19 +26,25 @@ const Rules = () => {
         <DialogTitle id="rules-title">Правила игры</DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
+            Слова могут быть существительными в единственном числе, а также во
+            множественном числе, если такие слова не существуют в единственном
+            (например: дрова, вилы, очки).
           </Typography>
           <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-            auctor.
+            Чтобы открыть следующий уровень, необходимо угадать 70% слов
+            текущего уровня.
           </Typography>
           <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-            cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-            dui. Donec ullamcorper nulla non metus auctor fringilla.
+            За угаданные слова начисляются баллы, в количестве равном количеству
+            букв в угаданном слове.
+          </Typography>
+          <Typography gutterBottom>
+            Баллы можно использовать для получения подсказки, для этого нужно
+            нажать на иконку с подсказкой.
+          </Typography>
+          <Typography gutterBottom>
+            Если нажать на одно из угаданных слов, появится окно со значением
+            этого слова.
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -46,7 +53,7 @@ const Rules = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Box>
   );
 };
 
