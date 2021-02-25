@@ -2,7 +2,19 @@ import { Link } from 'react-router-dom';
 import { Button, IconButton, Grid, Box } from '@material-ui/core';
 import { ArrowBackIos } from '@material-ui/icons';
 import { levelsNumber } from '../../../../constants/levelsNumber';
-import { useStyles } from './AllLevelsMaterialStyles';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '20px',
+  },
+  link: {
+    textDecoration: 'none',
+  },
+}));
 
 const AllLevels = () => {
   const classMaterial: Record<'header' | 'link', string> = useStyles();

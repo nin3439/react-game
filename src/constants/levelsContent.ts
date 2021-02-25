@@ -1,8 +1,8 @@
-export const mokLevels = [
+export const mockLevels = [
   {
     id: 1,
-    word: 'Вертолет',
-    smallWords: [
+    word: 'вертолет',
+    includedWords: [
       'вертел',
       'ветер',
       'ответ',
@@ -18,8 +18,6 @@ export const mokLevels = [
       'торт',
       'вето',
       'евро',
-      'реле',
-      'реле',
       'вор',
       'вол',
       'лев',
@@ -33,16 +31,17 @@ export const mokLevels = [
       'рот',
       'тол',
       'тор',
+      'лот',
     ],
   },
   {
     id: 2,
-    word: 'Самолет',
-    smallWords: ['лет'],
+    word: 'самолет',
+    includedWords: ['лет', 'сом'],
   },
   {
     id: 3,
-    word: 'Настроение',
-    smallWords: ['наст'],
+    word: 'настроение',
+    includedWords: ['наст'],
   },
 ];
