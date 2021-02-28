@@ -1,11 +1,15 @@
-import { Box, makeStyles } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+import styled from 'styled-components';
 
-export const useStyles = makeStyles((theme) => ({
-  words: {
-    columns: '8',
-    padding: '20px',
-  },
-}));
+const StyledGrid = styled(Grid)`
+  padding: 0 50px;
+  columns: 8;
+`;
+const StyledTypography = styled(Typography)`
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+`;
 
 interface ILevelProps {
   includedWords: string[];
@@ -16,18 +20,17 @@ export const SmallWords: React.FC<ILevelProps> = ({
   includedWords,
   foundWords,
 }) => {
-  const classMaterial: Record<'words', string> = useStyles();
   return (
-    <Box className={classMaterial.words}>
-      {includedWords!.map((word) => {
+    <StyledGrid>
+      {includedWords!.map((word, index) => {
         return (
-          <Box>
-            {foundWords.includes(word)
+          <StyledTypography key={index} color="textPrimary" variant="h5">
+            {foundWords?.includes(word)
               ? word.toUpperCase()
-              : word.replace(word, '.'.repeat(word.length))}
-          </Box>
+              : word.replace(word, '*'.repeat(word.length))}
+          </StyledTypography>
         );
       })}
-    </Box>
+    </StyledGrid>
   );
 };

@@ -1,36 +1,40 @@
 import React from 'react';
-import Main from './components/Main/Main';
-import Footer from './components/Footer';
+import { Main } from './components/Main/Main';
+import Footer from './components/Footer/Footer';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
-import { orange, indigo } from '@material-ui/core/colors';
+import styled from 'styled-components';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-    width: '100vw',
-    backgroundImage:
-      'linear-gradient(-225deg, #5d9fff 0%, #b8dcff 48%,#6bbbff 100%)',
-    overflow: 'hidden',
-  },
-}));
+const StyledBox = styled(Box)`
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+`;
 
 const theme = createMuiTheme({
   palette: {
-    primary: indigo,
-    secondary: orange,
+    primary: {
+      main: '#ffb74d',
+    },
+    secondary: {
+      main: '#11cb5f',
+    },
+    text: {
+      primary: '#455a64',
+    },
+    type: 'light',
   },
 });
 
 function App() {
-  const classMaterial: Record<'root', string> = useStyles();
   return (
     <ThemeProvider theme={theme}>
-      <Box className={classMaterial.root}>
+      <CssBaseline />
+      <StyledBox>
         <Main />
         <Footer />
-      </Box>
+      </StyledBox>
     </ThemeProvider>
   );
 }

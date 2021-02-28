@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import AllLevels from './AllLevels/AllLevels';
+import { levelsNumber } from '../../../constants/levelsNumber';
 import Level from './Level/Level';
-import { makeStyles, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '93vh',
-  },
-}));
+interface Ilevels {
+  number: string;
+  isLevelOpen: boolean;
+}
 
-function Levels() {
-  const classMaterial: Record<'root', string> = useStyles();
+export const Levels: React.FC = () => {
+  const [levels, setLevels] = useState<Ilevels[]>(levelsNumber);
+
   return (
-    <Box className={classMaterial.root}>
+    <Box style={{ height: 'calc(100vh-75px)' }}>
       <Switch>
-        <Route exact path="/level" component={AllLevels} />
-        <Route path="/level/:number" component={Level} />
+        <Route
+          exact
+          path="/level"
+          render={() => <AllLevels levels={levels} />}
+        />
+        <Route
+          path="/level/:number"
+          render={() => <Level levels={levels} setLevels={setLevels} />}
+        />
       </Switch>
     </Box>
   );
-}
-export default Levels;
+};
