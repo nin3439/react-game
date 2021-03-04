@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import AllLevels from './AllLevels/AllLevels';
 import { levelsNumber } from '../../../constants/levelsNumber';
 import Level from './Level/Level';
+import { useStateWithLocalStorage } from '../../../utils/utils';
 import { Box } from '@material-ui/core';
 
 interface Ilevels {
@@ -11,7 +12,10 @@ interface Ilevels {
 }
 
 export const Levels: React.FC = () => {
-  const [levels, setLevels] = useState<Ilevels[]>(levelsNumber);
+  const [levels, setLevels] = useStateWithLocalStorage(
+    'levelNumber',
+    levelsNumber
+  );
 
   return (
     <Box style={{ height: 'calc(100vh-75px)' }}>

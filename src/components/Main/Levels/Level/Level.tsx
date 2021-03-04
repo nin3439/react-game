@@ -5,6 +5,8 @@ import { SmallWords } from './LevelComponents/SmallWords';
 import { MainWord } from './LevelComponents/MainWord';
 import { mockLevels } from '../../../../constants/levelsContent';
 import { Grid } from '@material-ui/core';
+import { useStateWithLocalStorage } from '../../../../utils/utils';
+import { useGameDifficulty } from '../../../../context/GameDifficultyContext';
 import styled from 'styled-components';
 
 const StyledGrid = styled(Grid)`
@@ -39,20 +41,26 @@ interface IFoundWords {
 
 const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
   const { params } = useRouteMatch();
-  const [coins, setCoins] = useState(0);
+  const [coins, setCoins] = useStateWithLocalStorage('coins', 0);
+  const gameDifficulty = useGameDifficulty();
 
   const level = mockLevels.find(
     // @ts-ignore
     (item) => item.id === parseInt(params.number, 10)
   );
-  const [foundWords, setFoundWords] = useState<IFoundWords>({});
+  const [foundWords, setFoundWords] = useStateWithLocalStorage(
+    'foundWords',
+    {}
+  );
 
   useEffect(() => {
     if (level) {
-      setFoundWords((prev: IFoundWords) => ({
-        ...prev,
-        [level.id]: [],
-      }));
+      setFoundWords((prev: IFoundWords) => {
+        return {
+          ...prev,
+          [level.id]: prev[level.id]?.length ? [...prev[level.id]] : [],
+        };
+      });
     }
   }, [level]);
 
@@ -60,7 +68,7 @@ const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
     if (level) {
       const levelProgress =
         foundWords[level.id]?.length || 0 / level.includedWords.length;
-      if (levelProgress >= 0.1) {
+      if (levelProgress >= gameDifficulty!.levelDifficulty / 100) {
         setLevels((prev: any) => {
           return prev.map((item: any) => {
             if (+item.number === level.id + 1) {

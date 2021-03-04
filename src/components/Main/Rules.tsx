@@ -46,17 +46,17 @@ const Rules = () => {
             текущего уровня.
           </Typography>
           <Typography gutterBottom>
-            За угаданные слова начисляются баллы, в количестве равном количеству
-            букв в угаданном слове.
+            За угаданные слова начисляются монеты (по количеству букв в
+            угаданном слове).
           </Typography>
-          <Typography gutterBottom>
+          {/* <Typography gutterBottom>
             Баллы можно использовать для получения подсказки, для этого нужно
             нажать на иконку с подсказкой.
           </Typography>
           <Typography gutterBottom>
             Если нажать на одно из угаданных слов, появится окно со значением
             этого слова.
-          </Typography>
+          </Typography> */}
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">

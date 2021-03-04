@@ -8,9 +8,10 @@ import {
   DialogActions,
   Button,
   DialogContent,
+  Tooltip,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { Home, ArrowBackIos, ArrowForwardIos } from '@material-ui/icons/';
+import { Menu, ArrowBackIos, ArrowForwardIos } from '@material-ui/icons/';
 import {
   getNumberOfRemainingWords,
   playSound,
@@ -103,38 +104,44 @@ export const LevelHeader: React.FC<ILevelProps> = ({
       wrap="nowrap"
     >
       <Grid container direction="row" alignItems="center" wrap="nowrap">
-        <Link
-          onClick={() => {
-            playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
-          }}
-          to={`/level/${id - 1}`}
-          style={{
-            pointerEvents: id === 1 ? 'none' : 'auto',
-          }}
-        >
-          <IconButton>
-            <ArrowBackIos />
-          </IconButton>
-        </Link>
+        <Tooltip title="Предыдущий уровень">
+          <Link
+            onClick={() => {
+              playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+            }}
+            to={`/level/${id - 1}`}
+            style={{
+              pointerEvents: id === 1 ? 'none' : 'auto',
+              opacity: id === 1 ? '0.3' : '1',
+            }}
+          >
+            <IconButton>
+              <ArrowBackIos />
+            </IconButton>
+          </Link>
+        </Tooltip>
         <StyledLevelTypography color="textPrimary" variant="h5">
           {' '}
           Уровень {id}{' '}
         </StyledLevelTypography>
         <Box>
           {numberOfRemainingWords < 1 ? (
-            <Link
-              onClick={() => {
-                playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
-              }}
-              to={`/level/${id + 1}`}
-              style={{
-                pointerEvents: id === 10 ? 'none' : 'auto',
-              }}
-            >
-              <IconButton>
-                <ArrowForwardIos />
-              </IconButton>
-            </Link>
+            <Tooltip title="Следующий уровень">
+              <Link
+                onClick={() => {
+                  playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+                }}
+                to={`/level/${id + 1}`}
+                style={{
+                  pointerEvents: id === 10 ? 'none' : 'auto',
+                  opacity: id === 10 ? '0.3' : '1',
+                }}
+              >
+                <IconButton>
+                  <ArrowForwardIos />
+                </IconButton>
+              </Link>
+            </Tooltip>
           ) : (
             <StyledNumberTypography variant="h5">
               {numberOfRemainingWords}{' '}
@@ -146,16 +153,18 @@ export const LevelHeader: React.FC<ILevelProps> = ({
         <img src={Dollar} alt="Dollar Icon" width="40wh" height="40vh" />
         <StyledCoinsTypography variant="h5"> {coins} </StyledCoinsTypography>
       </Grid>
-      <Link
-        to="/level"
-        onClick={() => {
-          playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
-        }}
-      >
-        <IconButton>
-          <Home />
-        </IconButton>
-      </Link>
+      <Tooltip title="Меню">
+        <Link
+          to="/level"
+          onClick={() => {
+            playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+          }}
+        >
+          <IconButton>
+            <Menu />
+          </IconButton>
+        </Link>
+      </Tooltip>
       {numberOfRemainingWords === 0 ? (
         <Dialog
           onClose={() => {

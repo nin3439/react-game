@@ -1,5 +1,5 @@
 import React, { useState, MouseEvent, useEffect } from 'react';
-import { Box, Typography, Button, Grid, Zoom } from '@material-ui/core';
+import { Box, Typography, Button, Grid, Tooltip } from '@material-ui/core';
 import {
   BackspaceOutlined,
   HighlightOff,
@@ -105,11 +105,8 @@ export const MainWord: React.FC<ILevelProps> = ({
   }, [word]);
 
   const checkWord = () => {
-    console.log(input);
     if (includedWords.includes(input)) {
-      setCoins((prev: any) => {
-        return prev + input.length;
-      });
+      setCoins((prev: any) => prev + input.length);
       setHistoryPressLetter([]);
       setLetter((prev: ILetterProps[]) => {
         return prev.map((item: ILetterProps) => {
@@ -126,7 +123,6 @@ export const MainWord: React.FC<ILevelProps> = ({
         }));
       }, 1000);
     } else {
-      console.log('else');
       setIsMessageOpen(true);
       setTimeout(() => {
         setIsMessageOpen(false);
@@ -161,23 +157,21 @@ export const MainWord: React.FC<ILevelProps> = ({
 
   const removeLastLetter = () => {
     setInput((prev: string) => prev.slice(0, prev.length - 1));
+    setHistoryPressLetter((prev: string[]) =>
+      prev.filter((item, index) => index !== prev.length - 1)
+    );
     setLetter((prev: ILetterProps[]) => {
       return prev.map((item: ILetterProps) => {
-        console.log(item.id, historyPressLetter[historyPressLetter.length - 1]);
         if (item.id === historyPressLetter[historyPressLetter.length - 1]) {
           return { ...item, isPressed: !item.isPressed };
         }
         return item;
       });
     });
-    setHistoryPressLetter((prev: string[]) => {
-      prev.pop();
-      return prev;
-    });
   };
 
-  useHotkeys('ctrl+space', () => checkWord());
-  useHotkeys('ctrl+z', () => removeLastLetter());
+  useHotkeys('ctrl+space', () => checkWord(), {}, [input]);
+  useHotkeys('ctrl+z', () => removeLastLetter(), {}, [historyPressLetter]);
   useHotkeys('ctrl+x', () => clearInput());
 
   return (
@@ -190,13 +184,11 @@ export const MainWord: React.FC<ILevelProps> = ({
     >
       <Grid item>
         {isMessageOpen ? (
-          <Zoom in={isMessageOpen}>
-            <Messages
-              input={input}
-              foundWords={foundWords}
-              includedWords={includedWords}
-            />
-          </Zoom>
+          <Messages
+            input={input}
+            foundWords={foundWords}
+            includedWords={includedWords}
+          />
         ) : (
           <StyledInput
             color="textPrimary"
@@ -234,51 +226,57 @@ export const MainWord: React.FC<ILevelProps> = ({
       </Grid>
       <Grid item>
         <Box>
-          <Button
-            onClick={() => {
-              checkWord();
-              playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
-            }}
-          >
-            <CheckCircleOutline
-              style={{
-                color: 'green',
-                height: '5vh',
-                width: '5vw',
-                marginTop: '30px',
+          <Tooltip title="Проверить слово">
+            <Button
+              onClick={() => {
+                checkWord();
+                playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
               }}
-            />
-          </Button>
-          <Button
-            onClick={() => {
-              removeLastLetter();
-              playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
-            }}
-          >
-            <BackspaceOutlined
-              style={{
-                color: 'rosybrown',
-                height: '5vh',
-                width: '5vw',
-                marginTop: '30px',
+            >
+              <CheckCircleOutline
+                style={{
+                  color: 'green',
+                  height: '5vh',
+                  width: '5vw',
+                  marginTop: '30px',
+                }}
+              />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Удалить последнюю букву">
+            <Button
+              onClick={() => {
+                removeLastLetter();
+                playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
               }}
-            />
-          </Button>
-          <Button
-            onClick={() => {
-              clearInput();
-              playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
-            }}
-          >
-            <HighlightOff
-              style={{
-                color: 'firebrick',
-                height: '5vh',
-                width: '5vw',
-                marginTop: '30px',
+            >
+              <BackspaceOutlined
+                style={{
+                  color: 'rosybrown',
+                  height: '5vh',
+                  width: '5vw',
+                  marginTop: '30px',
+                }}
+              />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Удалить слово">
+            <Button
+              onClick={() => {
+                clearInput();
+                playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
               }}
-            />
-          </Button>
+            >
+              <HighlightOff
+                style={{
+                  color: 'firebrick',
+                  height: '5vh',
+                  width: '5vw',
+                  marginTop: '30px',
+                }}
+              />
+            </Button>
+          </Tooltip>
         </Box>
       </Grid>
     </Grid>

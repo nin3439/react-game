@@ -1,6 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, IconButton, Grid, Box, Typography } from '@material-ui/core';
+import {
+  Button,
+  IconButton,
+  Grid,
+  Typography,
+  Tooltip,
+} from '@material-ui/core';
 import { Home } from '@material-ui/icons';
 import Lock from '../../../../assets/lock.png';
 import { useSound } from '../../../../context/SoundContext';
@@ -59,20 +65,21 @@ const AllLevels: React.FC<IlevelsProps> = ({ levels }) => {
       <StyledHeaderGrid
         container
         direction="row"
-        justify="space-between"
+        justify="flex-end"
         alignItems="center"
       >
-        <Box>Прогресс %</Box>
-        <Link
-          to="/"
-          onClick={() => {
-            playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
-          }}
-        >
-          <IconButton>
-            <Home />
-          </IconButton>
-        </Link>
+        <Tooltip title="На главную">
+          <Link
+            to="/"
+            onClick={() => {
+              playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+            }}
+          >
+            <IconButton>
+              <Home />
+            </IconButton>
+          </Link>
+        </Tooltip>
       </StyledHeaderGrid>
       <StyledGrid container justify="center" spacing={2}>
         {levels.map((level, index) => (

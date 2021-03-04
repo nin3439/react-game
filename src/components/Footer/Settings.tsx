@@ -13,6 +13,7 @@ import {
   Select,
   MenuItem,
   Checkbox,
+  Tooltip,
 } from '@material-ui/core';
 import { useSound } from '../../context/SoundContext';
 import { playSound } from '../../utils/utils';
@@ -57,19 +58,22 @@ export const SettingsComponent: React.FC<ISettingsProps> = ({
     gameDifficulty?.setLevelDifficulty(event.target.value as number);
   };
 
-  useHotkeys('ctrl+f', () => handleSettingsOpen());
+  useHotkeys('alt+s', () => handleSettingsOpen(), {}, [openSettings]);
 
   return (
     <Box>
-      <IconButton
-        style={{ marginBottom: '-10px' }}
-        onClick={() => {
-          handleSettingsOpen();
-          playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
-        }}
-      >
-        <Settings />
-      </IconButton>
+      <Tooltip title="Настройки">
+        <IconButton
+          style={{ marginBottom: '-10px' }}
+          onClick={() => {
+            handleSettingsOpen();
+            playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+          }}
+        >
+          <Settings />
+        </IconButton>
+      </Tooltip>
+
       <Dialog
         onClose={handleSettingsClose}
         aria-labelledby="rules"
@@ -112,12 +116,7 @@ export const SettingsComponent: React.FC<ISettingsProps> = ({
               <VolumeUp />
             </Grid>
           </Grid>
-          <Grid
-            container
-            direction="row"
-            // justify="space-between"
-            alignItems="center"
-          >
+          <Grid container direction="row" alignItems="center">
             <Typography id="music-slider" gutterBottom>
               Звук
             </Typography>
@@ -150,17 +149,18 @@ export const SettingsComponent: React.FC<ISettingsProps> = ({
           </Grid>
           <Grid container alignItems="center">
             <Typography id="level-difficulty" style={{ marginRight: '10px' }}>
-              Уровень сложности
+              Уровень сложности:
             </Typography>
             <Select
               value={gameDifficulty!.levelDifficulty}
               onChange={handleChangeSelect}
               displayEmpty
+              style={{ width: '145px', textAlign: 'center' }}
             >
-              <MenuItem value={70}>70%</MenuItem>
-              <MenuItem value={50}>50%</MenuItem>
-              <MenuItem value={30}>30%</MenuItem>
-              <MenuItem value={10}>10%</MenuItem>
+              <MenuItem value={70}>очень сложный</MenuItem>
+              <MenuItem value={50}>сложный</MenuItem>
+              <MenuItem value={30}>средний</MenuItem>
+              <MenuItem value={10}>легкий</MenuItem>
             </Select>
           </Grid>
         </DialogContent>

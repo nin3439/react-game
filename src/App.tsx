@@ -4,9 +4,10 @@ import Footer from './components/Footer/Footer';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Box } from '@material-ui/core';
+import { useStateWithLocalStorage } from './utils/utils';
 import { SoundProvider } from './context/SoundContext';
-import styled from 'styled-components';
 import { GameDifficultyProvider } from './context/GameDifficultyContext';
+import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
   height: 100vh;
@@ -15,7 +16,10 @@ const StyledBox = styled(Box)`
 `;
 
 const App: React.FC = () => {
-  const [isThemeDark, setIsThemeDark] = useState(false);
+  const [isThemeDark, setIsThemeDark] = useStateWithLocalStorage(
+    'isThemeDark',
+    false
+  );
   const [volumeMusic, setVolumeMusic] = useState<number>(30);
   const [isMusicOn, setIsMusicOn] = useState<boolean>(false);
   const [music, setMusic] = useState(

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useStateWithLocalStorage } from '../utils/utils';
 
 interface IChildren {
   children: React.ReactNode;
@@ -18,7 +19,10 @@ export const useGameDifficulty = () => {
 };
 
 export const GameDifficultyProvider = ({ children }: IChildren) => {
-  const [levelDifficulty, setLevelDifficulty] = useState<number>(70);
+  const [levelDifficulty, setLevelDifficulty] = useStateWithLocalStorage(
+    'levelDifficulty',
+    50
+  );
 
   return (
     <GameDifficultyContext.Provider

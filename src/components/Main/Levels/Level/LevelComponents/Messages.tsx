@@ -12,7 +12,6 @@ export const Messages: React.FC<IMessagesProps> = ({
   foundWords,
   includedWords,
 }) => {
-  console.log(input, foundWords);
   return foundWords.includes(input) ? (
     <Grid container alignItems="center" style={{ height: '10vh' }}>
       <SnackbarContent

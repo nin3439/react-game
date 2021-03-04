@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Button, Grid, Switch } from '@material-ui/core';
+import {
+  Typography,
+  Button,
+  Grid,
+  Switch,
+  Tooltip,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  Box,
+} from '@material-ui/core';
 import Rules from '../Rules';
 import { useSound } from '../../../context/SoundContext';
 import { playSound } from '../../../utils/utils';
+import { useHotkeys } from 'react-hotkeys-hook';
 import styled from 'styled-components';
 
 const StyledGrid = styled(Grid)`
   height: calc(100vh - 135px);
-  row-gap: 30px;
+  row-gap: 25px;
 `;
 
 const StyledTypography = styled(Typography)`
@@ -35,15 +46,32 @@ interface IHomeProps {
 }
 
 export const Home: React.FC<IHomeProps> = ({ isThemeDark, setIsThemeDark }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sound = useSound();
+
+  const handleClickOpen = () => {
+    setIsModalOpen(true);
+  };
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const changeTheme = () => {
+    setIsThemeDark(!isThemeDark);
+  };
+
+  useHotkeys('alt+t', () => changeTheme(), {}, [isThemeDark]);
+
   return (
     <Grid>
-      <Grid style={{ margin: '10px 20px' }}>
-        <Switch
-          checked={isThemeDark}
-          onChange={() => setIsThemeDark(!isThemeDark)}
-          color="primary"
-        />
+      <Grid style={{ margin: '10px 25px' }}>
+        <Tooltip title="Сменить тему">
+          <Switch
+            checked={isThemeDark}
+            onChange={changeTheme}
+            color="primary"
+          />
+        </Tooltip>
       </Grid>
       <StyledGrid
         container
@@ -61,9 +89,61 @@ export const Home: React.FC<IHomeProps> = ({ isThemeDark, setIsThemeDark }) => {
           }}
         >
           <Button variant="outlined" color="primary">
-            Играть
+            {localStorage.key(2) ? 'Продолжить' : 'Играть'}
           </Button>
         </StyledLink>
+        {localStorage.key(2) ? (
+          <Box>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => {
+                handleClickOpen();
+                playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+              }}
+            >
+              Новая игра
+            </Button>
+
+            <Dialog
+              onClose={handleClose}
+              aria-labelledby="rules"
+              open={isModalOpen}
+            >
+              <DialogContent dividers>
+                <Typography gutterBottom>
+                  Все найденные слова будут стерты.
+                </Typography>
+                <Typography gutterBottom>Вы уверены?</Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  autoFocus
+                  onClick={() => {
+                    playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+                    handleClose();
+                  }}
+                  color="primary"
+                >
+                  Нет
+                </Button>
+                <StyledLink
+                  to="/level"
+                  onClick={() => {
+                    playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+                    localStorage.clear();
+                  }}
+                >
+                  <Button onClick={handleClose} color="primary">
+                    Да
+                  </Button>
+                </StyledLink>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        ) : (
+          ''
+        )}
         <Rules />
       </StyledGrid>
     </Grid>

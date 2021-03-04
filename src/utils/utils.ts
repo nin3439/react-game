@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const getNumberOfRemainingWords = (
   includedWords: number,
   foundWords: number,
@@ -19,4 +21,20 @@ export const playSound = (
   if (isSoundOn) {
     audio.play();
   }
+};
+
+export const useStateWithLocalStorage = (
+  localStorageKey: string,
+  initialState: any
+) => {
+  const [value, setValue] = React.useState(
+    JSON.parse(
+      localStorage.getItem(localStorageKey) || JSON.stringify(initialState)
+    )
+  );
+  React.useEffect(() => {
+    localStorage.setItem(localStorageKey, JSON.stringify(value));
+  }, [value]);
+
+  return [value, setValue];
 };
