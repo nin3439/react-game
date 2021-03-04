@@ -1,11 +1,15 @@
 import React, { useState, MouseEvent, useEffect } from 'react';
-import { Box, Typography, Button, Grid } from '@material-ui/core';
+import { Box, Typography, Button, Grid, Zoom } from '@material-ui/core';
 import {
   BackspaceOutlined,
   HighlightOff,
   CheckCircleOutline,
 } from '@material-ui/icons';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useSound } from '../../../../../context/SoundContext';
+import { playSound } from '../../../../../utils/utils';
 import styled, { css } from 'styled-components';
+import { Messages } from './Messages';
 
 const StyledInput = styled(Typography)`
   height: 10vh;
@@ -16,17 +20,35 @@ const StyledInput = styled(Typography)`
 const StyledButton = styled(Button)`
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 7px 14px;
-  margin: 10px 10px 30px;
+  margin: 10px;
   width: 7vw;
   height: 10vh;
   border: 2px solid #ffb74d;
   font-size: 170%;
-
+  transition: all 0.5s;
   &:hover {
     background-color: #ffb74d;
+    transition: all 0.5s;
   }
   & .MuiButton-label {
     color: #455a64;
+  }
+  @media (min-width: 1400px) {
+    width: 6vw;
+    height: 9vh;
+  }
+  @media (max-width: 1024px) {
+    width: 7vw;
+    height: 8vh;
+  }
+  @media (max-width: 800px) {
+    width: 6vw;
+    height: 7vh;
+    font-size: 130%;
+  }
+  @media (max-width: 500px) {
+    width: 5vw;
+    height: 6vh;
   }
   ${(props) =>
     props.disabled
@@ -34,7 +56,7 @@ const StyledButton = styled(Button)`
           background-color: #ccc;
         `
       : css`
-          background-color: #fff;
+          background-color: transparent;
         `};
 `;
 
@@ -43,6 +65,7 @@ interface ILevelProps {
   setCoins: (coins: any) => void;
   word: string;
   includedWords: string[];
+  foundWords: any;
   setFoundWords: (foundWords: any) => void;
 }
 
@@ -68,34 +91,47 @@ export const MainWord: React.FC<ILevelProps> = ({
   setCoins,
   word,
   includedWords,
+  foundWords,
   setFoundWords,
 }) => {
   const [input, setInput] = useState('');
   const [letter, setLetter] = useState<ILetterProps[]>([]);
   const [historyPressLetter, setHistoryPressLetter] = useState<string[]>([]);
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
+  const sound = useSound();
 
   useEffect(() => {
     setLetter(getLetters(word));
   }, [word]);
 
   const checkWord = () => {
+    console.log(input);
     if (includedWords.includes(input)) {
-      setFoundWords((prev: IFoundWords) => ({
-        ...prev,
-        [levelId]: [...prev[levelId], input],
-      }));
       setCoins((prev: any) => {
         return prev + input.length;
       });
-      setInput('');
       setHistoryPressLetter([]);
       setLetter((prev: ILetterProps[]) => {
         return prev.map((item: ILetterProps) => {
           return { ...item, isPressed: false };
         });
       });
+      setIsMessageOpen(true);
+      setTimeout(() => {
+        setIsMessageOpen(false);
+        setInput('');
+        setFoundWords((prev: IFoundWords) => ({
+          ...prev,
+          [levelId]: [...prev[levelId], input],
+        }));
+      }, 1000);
     } else {
-      console.log('false');
+      console.log('else');
+      setIsMessageOpen(true);
+      setTimeout(() => {
+        setIsMessageOpen(false);
+      }, 1000);
+      clearInput();
     }
   };
 
@@ -113,15 +149,6 @@ export const MainWord: React.FC<ILevelProps> = ({
     });
   };
 
-  // const keyPress = (event: globalThis.KeyboardEvent) => {
-  //   console.log(event.key);
-  //   if (event.key === 'Enter') {
-  //     checkWord();
-  //   }
-  // };
-
-  // document.addEventListener('keypress', (event) => keyPress(event));
-
   const clearInput = () => {
     setInput('');
     setHistoryPressLetter([]);
@@ -136,18 +163,22 @@ export const MainWord: React.FC<ILevelProps> = ({
     setInput((prev: string) => prev.slice(0, prev.length - 1));
     setLetter((prev: ILetterProps[]) => {
       return prev.map((item: ILetterProps) => {
+        console.log(item.id, historyPressLetter[historyPressLetter.length - 1]);
         if (item.id === historyPressLetter[historyPressLetter.length - 1]) {
           return { ...item, isPressed: !item.isPressed };
         }
         return item;
       });
     });
-
     setHistoryPressLetter((prev: string[]) => {
       prev.pop();
       return prev;
     });
   };
+
+  useHotkeys('ctrl+space', () => checkWord());
+  useHotkeys('ctrl+z', () => removeLastLetter());
+  useHotkeys('ctrl+x', () => clearInput());
 
   return (
     <Grid
@@ -158,13 +189,23 @@ export const MainWord: React.FC<ILevelProps> = ({
       spacing={2}
     >
       <Grid item>
-        <StyledInput
-          color="textPrimary"
-          variant="h5"
-          style={{ textTransform: 'uppercase' }}
-        >
-          {input}
-        </StyledInput>
+        {isMessageOpen ? (
+          <Zoom in={isMessageOpen}>
+            <Messages
+              input={input}
+              foundWords={foundWords}
+              includedWords={includedWords}
+            />
+          </Zoom>
+        ) : (
+          <StyledInput
+            color="textPrimary"
+            variant="h5"
+            style={{ textTransform: 'uppercase' }}
+          >
+            {input}
+          </StyledInput>
+        )}
       </Grid>
       <Grid item>
         <Grid container direction="row" justify="center" alignItems="center">
@@ -176,11 +217,16 @@ export const MainWord: React.FC<ILevelProps> = ({
                 variant="outlined"
                 value={oneLetter.letter}
                 disabled={oneLetter.isPressed ? true : false}
-                onClick={clickOnLetter}
+                onClick={(e) => {
+                  clickOnLetter(e);
+                  playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+                }}
                 key={index}
                 color="primary"
               >
-                {oneLetter.letter}
+                <Typography color="textPrimary" variant="h5">
+                  {oneLetter.letter}
+                </Typography>
               </StyledButton>
             );
           })}
@@ -188,30 +234,48 @@ export const MainWord: React.FC<ILevelProps> = ({
       </Grid>
       <Grid item>
         <Box>
-          <Button onClick={checkWord}>
+          <Button
+            onClick={() => {
+              checkWord();
+              playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+            }}
+          >
             <CheckCircleOutline
               style={{
                 color: 'green',
                 height: '5vh',
                 width: '5vw',
+                marginTop: '30px',
               }}
             />
           </Button>
-          <Button onClick={removeLastLetter}>
+          <Button
+            onClick={() => {
+              removeLastLetter();
+              playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+            }}
+          >
             <BackspaceOutlined
               style={{
                 color: 'rosybrown',
                 height: '5vh',
                 width: '5vw',
+                marginTop: '30px',
               }}
             />
           </Button>
-          <Button onClick={clearInput}>
+          <Button
+            onClick={() => {
+              clearInput();
+              playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+            }}
+          >
             <HighlightOff
               style={{
                 color: 'firebrick',
                 height: '5vh',
                 width: '5vw',
+                marginTop: '30px',
               }}
             />
           </Button>

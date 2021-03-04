@@ -12,8 +12,14 @@ const StyledGrid = styled(Grid)`
   max-width: 1280px;
   padding: 0 40px;
   margin: 0 auto;
+  @media (min-width: 1500px) {
+    max-width: 1400px;
+  }
   @media (max-width: 870px) {
     max-width: 800px;
+  }
+  @media (max-width: 550px) {
+    padding: 0 20px;
   }
 `;
 
@@ -80,7 +86,13 @@ const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
         includedWords={level.includedWords}
         foundWords={foundWords[level.id]}
       />
-      <StyledGrid container direction="column" justify="center" spacing={1}>
+      <StyledGrid
+        container
+        direction="column"
+        justify="center"
+        spacing={2}
+        wrap="nowrap"
+      >
         <Grid item>
           <SmallWords
             includedWords={level.includedWords}
@@ -93,6 +105,7 @@ const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
             setCoins={setCoins}
             word={level.word}
             includedWords={level.includedWords}
+            foundWords={foundWords[level.id]}
             setFoundWords={setFoundWords}
           />
         </Grid>

@@ -8,9 +8,12 @@ import {
   DialogActions,
   Box,
 } from '@material-ui/core/';
+import { useSound } from '../../context/SoundContext';
+import { playSound } from '../../utils/utils';
 
 const Rules = () => {
   const [open, setOpen] = useState(false);
+  const sound = useSound();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -19,7 +22,14 @@ const Rules = () => {
   };
   return (
     <Box>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          handleClickOpen();
+          playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+        }}
+      >
         Правила
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="rules" open={open}>

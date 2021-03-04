@@ -1,16 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, IconButton, Grid, Box } from '@material-ui/core';
-import { ArrowBackIos } from '@material-ui/icons';
+import { Button, IconButton, Grid, Box, Typography } from '@material-ui/core';
+import { Home } from '@material-ui/icons';
 import Lock from '../../../../assets/lock.png';
+import { useSound } from '../../../../context/SoundContext';
+import { playSound } from '../../../../utils/utils';
 import styled from 'styled-components';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
+const StyledHeaderGrid = styled(Grid)`
+  padding: 15px 40px;
+  height: 75px;
+`;
+
 const StyledGrid = styled(Grid)`
   padding: 15px 40px;
+  height: calc(100vh - 136px);
 `;
 
 const StyledButton = styled(Button)`
@@ -20,13 +28,18 @@ const StyledButton = styled(Button)`
   height: 20vh;
   font-size: 26px;
   border: 2px solid #ffb74d;
+  transition: all 1s;
   &:hover {
     background-color: #ffb74d;
+    transition: all 1s;
   }
   & .MuiButton-label {
-    color: #455a64;
     column-gap: 10px;
-    font-size: 26px;
+  }
+  @media (max-width: 1260px) {
+    width: 17vw;
+    height: 17vh;
+    margin: 4px;
   }
 `;
 
@@ -40,22 +53,28 @@ interface IlevelsProps {
 }
 
 const AllLevels: React.FC<IlevelsProps> = ({ levels }) => {
+  const sound = useSound();
   return (
     <>
-      <StyledGrid
+      <StyledHeaderGrid
         container
         direction="row"
         justify="space-between"
         alignItems="center"
       >
-        <Link to="/">
+        <Box>Прогресс %</Box>
+        <Link
+          to="/"
+          onClick={() => {
+            playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+          }}
+        >
           <IconButton>
-            <ArrowBackIos />
+            <Home />
           </IconButton>
         </Link>
-        <Box>Прогресс %</Box>
-      </StyledGrid>
-      <Grid container justify="center" spacing={3}>
+      </StyledHeaderGrid>
+      <StyledGrid container justify="center" spacing={2}>
         {levels.map((level, index) => (
           <Grid key={level.number} item>
             <StyledLink
@@ -68,8 +87,14 @@ const AllLevels: React.FC<IlevelsProps> = ({ levels }) => {
                 variant="outlined"
                 color="primary"
                 disabled={!level.isLevelOpen}
+                onClick={() => {
+                  playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+                }}
               >
-                {level.number}
+                <Typography color="textPrimary" variant="h5">
+                  {' '}
+                  {level.number}
+                </Typography>
                 {level.isLevelOpen ? (
                   ''
                 ) : (
@@ -79,7 +104,7 @@ const AllLevels: React.FC<IlevelsProps> = ({ levels }) => {
             </StyledLink>
           </Grid>
         ))}
-      </Grid>
+      </StyledGrid>
     </>
   );
 };

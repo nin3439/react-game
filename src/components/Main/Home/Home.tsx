@@ -2,11 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Typography, Button, Grid, Switch } from '@material-ui/core';
 import Rules from '../Rules';
+import { useSound } from '../../../context/SoundContext';
+import { playSound } from '../../../utils/utils';
 import styled from 'styled-components';
 
 const StyledGrid = styled(Grid)`
-  height: calc(100vh - 115px);
+  height: calc(100vh - 135px);
   row-gap: 30px;
+`;
+
+const StyledTypography = styled(Typography)`
+  font-size: 106px;
+  @media (max-width: 1260px) {
+    font-size: 86px;
+  }
+  @media (max-width: 1000px) {
+    font-size: 76px;
+  }
+  @media (max-width: 800px) {
+    font-size: 66px;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -14,15 +29,20 @@ const StyledLink = styled(Link)`
   color: #3f51b5;
 `;
 
-export const Home: React.FC = () => {
+interface IHomeProps {
+  isThemeDark: boolean;
+  setIsThemeDark: (isThemeLight: boolean) => void;
+}
+
+export const Home: React.FC<IHomeProps> = ({ isThemeDark, setIsThemeDark }) => {
+  const sound = useSound();
   return (
     <Grid>
-      <Grid>
+      <Grid style={{ margin: '10px 20px' }}>
         <Switch
-          // checked={isLightTheme}
-          // onChange={() => setIsLightTheme(!isLightTheme)}
-          name="checkedA"
-          inputProps={{ 'aria-label': 'secondary checkbox' }}
+          checked={isThemeDark}
+          onChange={() => setIsThemeDark(!isThemeDark)}
+          color="primary"
         />
       </Grid>
       <StyledGrid
@@ -31,10 +51,15 @@ export const Home: React.FC = () => {
         justify="center"
         alignItems="center"
       >
-        <Typography color="textPrimary" variant="h1" component="h2">
+        <StyledTypography color="textPrimary" variant="h1">
           Слова из Слова
-        </Typography>
-        <StyledLink to="/level">
+        </StyledTypography>
+        <StyledLink
+          to="/level"
+          onClick={() => {
+            playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+          }}
+        >
           <Button variant="outlined" color="primary">
             Играть
           </Button>

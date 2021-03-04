@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Grid,
@@ -12,21 +12,30 @@ import {
   Slider,
   Select,
   MenuItem,
+  Checkbox,
 } from '@material-ui/core';
+import { useSound } from '../../context/SoundContext';
+import { playSound } from '../../utils/utils';
+import { useGameDifficulty } from '../../context/GameDifficultyContext';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { Settings, VolumeDown, VolumeUp } from '@material-ui/icons';
 
-export const SettingsComponent: React.FC = () => {
-  const [openSettings, setOpenSettings] = useState(false);
-  const [volumeMusic, setVolumeMusic] = useState<number>(30);
-  const [volumeSound, setVolumeSound] = useState<number>(30);
+interface ISettingsProps {
+  volumeMusic: number;
+  setVolumeMusic: (volumeMusic: number) => void;
+  isMusicOn: boolean;
+  setIsMusicOn: (isMusicOn: boolean) => void;
+}
 
-  const playMusic = () => {
-    const audio = new Audio();
-    audio.src = `https://zvukipro.com/uploads/files/2019-05/1559046191_2b52b40e2a3d9f6.mp3`;
-    audio.loop = true;
-    audio.volume = volumeMusic / 100;
-    audio.play();
-  };
+export const SettingsComponent: React.FC<ISettingsProps> = ({
+  volumeMusic,
+  setVolumeMusic,
+  isMusicOn,
+  setIsMusicOn,
+}) => {
+  const [openSettings, setOpenSettings] = useState(false);
+  const sound = useSound();
+  const gameDifficulty = useGameDifficulty();
 
   const handleSettingsOpen = () => {
     setOpenSettings(true);
@@ -37,32 +46,26 @@ export const SettingsComponent: React.FC = () => {
   };
 
   const handleChangeVolumeMusic = (event: any, newValue: number | number[]) => {
-    console.log(newValue);
     setVolumeMusic(newValue as number);
   };
 
   const handleChangeVolumeSound = (event: any, newValue: number | number[]) => {
-    console.log(newValue);
-    setVolumeSound(newValue as number);
+    sound?.setVolumeSound(newValue as number);
   };
 
-  const playSound = () => {
-    const audio = new Audio();
-    audio.src = `https://zvukipro.com/uploads/files/2018-10/1540316483_mechanic-button-pressing_fj_hbhno.mp3`;
-    audio.play();
-    audio.volume = volumeSound / 100;
+  const handleChangeSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
+    gameDifficulty?.setLevelDifficulty(event.target.value as number);
   };
 
-  useEffect(() => {
-    playMusic();
-  }, []);
+  useHotkeys('ctrl+f', () => handleSettingsOpen());
 
   return (
     <Box>
       <IconButton
+        style={{ marginBottom: '-10px' }}
         onClick={() => {
           handleSettingsOpen();
-          playSound();
+          playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
         }}
       >
         <Settings />
@@ -74,9 +77,26 @@ export const SettingsComponent: React.FC = () => {
       >
         <DialogTitle id="settings-title">Настройки игры</DialogTitle>
         <DialogContent dividers>
-          <Typography id="music-slider" gutterBottom>
-            Громкость музыки
-          </Typography>
+          <Grid
+            container
+            direction="row"
+            // justify="space-between"
+            alignItems="center"
+          >
+            <Typography id="music-slider" gutterBottom>
+              Музыка
+            </Typography>
+            <Checkbox
+              checked={isMusicOn}
+              onChange={() => setIsMusicOn(!isMusicOn)}
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+              color="primary"
+              onClick={() => {
+                playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+              }}
+            />
+          </Grid>
+
           <Grid container alignItems="center" spacing={2}>
             <Grid item>
               <VolumeDown />
@@ -92,16 +112,34 @@ export const SettingsComponent: React.FC = () => {
               <VolumeUp />
             </Grid>
           </Grid>
-          <Typography id="sound-slider" gutterBottom>
-            Громкость звуков
-          </Typography>
+          <Grid
+            container
+            direction="row"
+            // justify="space-between"
+            alignItems="center"
+          >
+            <Typography id="music-slider" gutterBottom>
+              Звук
+            </Typography>
+            <Checkbox
+              checked={sound!.isSoundOn}
+              onChange={() => {
+                sound!.setIsSoundOn(!sound?.isSoundOn);
+              }}
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+              color="primary"
+              onClick={() => {
+                playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+              }}
+            />
+          </Grid>
           <Grid container alignItems="center" spacing={2}>
             <Grid item>
               <VolumeDown />
             </Grid>
             <Grid item xs>
               <Slider
-                value={volumeSound}
+                value={sound!.volumeSound}
                 onChange={handleChangeVolumeSound}
                 aria-labelledby="sound-slider"
               />
@@ -110,12 +148,21 @@ export const SettingsComponent: React.FC = () => {
               <VolumeUp />
             </Grid>
           </Grid>
-          {/* <Select value={age} onChange={handleChange} displayEmpty>
-            <MenuItem value={70}>70%</MenuItem>
-            <MenuItem value={50}>50%</MenuItem>
-            <MenuItem value={30}>30%</MenuItem>
-            <MenuItem value={10}>10%</MenuItem>
-          </Select> */}
+          <Grid container alignItems="center">
+            <Typography id="level-difficulty" style={{ marginRight: '10px' }}>
+              Уровень сложности
+            </Typography>
+            <Select
+              value={gameDifficulty!.levelDifficulty}
+              onChange={handleChangeSelect}
+              displayEmpty
+            >
+              <MenuItem value={70}>70%</MenuItem>
+              <MenuItem value={50}>50%</MenuItem>
+              <MenuItem value={30}>30%</MenuItem>
+              <MenuItem value={10}>10%</MenuItem>
+            </Select>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleSettingsClose} color="primary">
