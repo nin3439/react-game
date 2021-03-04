@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import AllLevels from './AllLevels/AllLevels';
 import { levelsNumber } from '../../../constants/levelsNumber';
 import Level from './Level/Level';
 import { useStateWithLocalStorage } from '../../../utils/utils';
 import { Box } from '@material-ui/core';
-
-interface Ilevels {
-  number: string;
-  isLevelOpen: boolean;
-}
 
 export const Levels: React.FC = () => {
   const [levels, setLevels] = useStateWithLocalStorage(

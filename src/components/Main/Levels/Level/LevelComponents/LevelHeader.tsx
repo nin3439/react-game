@@ -16,6 +16,7 @@ import {
   getNumberOfRemainingWords,
   playSound,
 } from '../../../../../utils/utils';
+import { Statistics } from './Statistics';
 import { useSound } from '../../../../../context/SoundContext';
 import styled from 'styled-components';
 import Dollar from '../../../../../assets/dollar.png';
@@ -65,7 +66,7 @@ interface ILevelProps {
   id: number;
   coins: number;
   includedWords: string[];
-  foundWords: string[];
+  foundWords: any;
 }
 
 export const LevelHeader: React.FC<ILevelProps> = ({
@@ -83,11 +84,11 @@ export const LevelHeader: React.FC<ILevelProps> = ({
     setNumberOfRemainingWords(
       getNumberOfRemainingWords(
         includedWords.length,
-        foundWords?.length,
+        foundWords[id]?.length,
         gameDifficulty!.levelDifficulty || 0
       )
     );
-  }, [includedWords, foundWords, gameDifficulty]);
+  }, [includedWords, foundWords, gameDifficulty, id]);
 
   useEffect(() => {
     if (numberOfRemainingWords < 1) {
@@ -153,6 +154,7 @@ export const LevelHeader: React.FC<ILevelProps> = ({
         <img src={Dollar} alt="Dollar Icon" width="40wh" height="40vh" />
         <StyledCoinsTypography variant="h5"> {coins} </StyledCoinsTypography>
       </Grid>
+      <Statistics foundWords={foundWords} />
       <Tooltip title="Меню">
         <Link
           to="/level"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { LevelHeader } from './LevelComponents/LevelHeader';
 import { SmallWords } from './LevelComponents/SmallWords';
@@ -80,7 +80,7 @@ const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
       }
     }
     // eslint-disable-line react-hooks/exhaustive-deps
-  }, [level]);
+  }, [level, gameDifficulty, foundWords]);
 
   if (!level) {
     return <span>Не найдено</span>;
@@ -92,7 +92,7 @@ const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
         id={level.id}
         coins={coins}
         includedWords={level.includedWords}
-        foundWords={foundWords[level.id]}
+        foundWords={foundWords}
       />
       <StyledGrid
         container
