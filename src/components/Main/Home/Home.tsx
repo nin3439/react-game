@@ -10,9 +10,7 @@ import {
   DialogContent,
   DialogActions,
   Box,
-  IconButton,
 } from '@material-ui/core';
-import { Fullscreen } from '@material-ui/icons/';
 import Rules from '../Rules';
 import { useSound } from '../../../context/SoundContext';
 import { playSound } from '../../../utils/utils';
@@ -63,7 +61,6 @@ export const Home: React.FC<IHomeProps> = ({ isThemeDark, setIsThemeDark }) => {
   };
 
   useHotkeys('alt+t', () => changeTheme(), {}, [isThemeDark]);
-
   return (
     <Grid>
       <Grid style={{ margin: '10px 25px' }}>

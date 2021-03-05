@@ -160,7 +160,14 @@ export const SettingsComponent: React.FC<ISettingsProps> = ({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleSettingsClose} color="primary">
+          <Button
+            autoFocus
+            onClick={() => {
+              handleSettingsClose();
+              playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+            }}
+            color="primary"
+          >
             Сохранить
           </Button>
         </DialogActions>

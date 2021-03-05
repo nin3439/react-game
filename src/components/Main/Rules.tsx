@@ -14,12 +14,15 @@ import { playSound } from '../../utils/utils';
 const Rules = () => {
   const [open, setOpen] = useState(false);
   const sound = useSound();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <Box>
       <Button
@@ -52,14 +55,21 @@ const Rules = () => {
           {/* <Typography gutterBottom>
             Баллы можно использовать для получения подсказки, для этого нужно
             нажать на иконку с подсказкой.
-          </Typography>
+          </Typography> */}
           <Typography gutterBottom>
             Если нажать на одно из угаданных слов, появится окно со значением
             этого слова.
-          </Typography> */}
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button
+            autoFocus
+            onClick={() => {
+              handleClose();
+              playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+            }}
+            color="primary"
+          >
             Ок
           </Button>
         </DialogActions>

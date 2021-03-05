@@ -62,7 +62,7 @@ const App: React.FC = () => {
       <GameDifficultyProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <StyledBox id="app">
+          <StyledBox>
             <Main isThemeDark={isThemeDark} setIsThemeDark={setIsThemeDark} />
             <Footer
               volumeMusic={volumeMusic}

@@ -187,6 +187,7 @@ export const LevelHeader: React.FC<ILevelProps> = ({
               autoFocus
               onClick={() => {
                 setIsModalOpen(false);
+                playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
               }}
               color="primary"
             >

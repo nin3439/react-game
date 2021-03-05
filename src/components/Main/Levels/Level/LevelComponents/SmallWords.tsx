@@ -1,4 +1,6 @@
+import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
+import { OpenSmallWord } from './OpenSmallWord';
 import styled from 'styled-components';
 
 const StyledGrid = styled(Grid)`
@@ -42,9 +44,11 @@ export const SmallWords: React.FC<ILevelProps> = ({
       {includedWords!.map((word, index) => {
         return (
           <StyledTypography key={index} color="textPrimary" variant="h5">
-            {foundWords?.includes(word)
-              ? word.toUpperCase()
-              : word.replace(word, '*'.repeat(word.length))}
+            {foundWords?.includes(word) ? (
+              <OpenSmallWord word={word} />
+            ) : (
+              word.replace(word, '*'.repeat(word.length))
+            )}
           </StyledTypography>
         );
       })}
