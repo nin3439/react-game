@@ -19,6 +19,7 @@ import { Equalizer } from '@material-ui/icons/';
 import { playSound } from '../../../../../utils/utils';
 import { useSound } from '../../../../../context/SoundContext';
 import { mockLevels } from '../../../../../constants/levelsContent';
+import '../../../../../index.css';
 
 interface IStatisticsProps {
   foundWords: any;
@@ -144,7 +145,7 @@ export const Statistics: React.FC<IStatisticsProps> = ({ foundWords }) => {
             playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
           }}
         >
-          <Equalizer />
+          <Equalizer className="icon" />
         </IconButton>
       </Tooltip>
       <Dialog
@@ -155,11 +156,7 @@ export const Statistics: React.FC<IStatisticsProps> = ({ foundWords }) => {
         <DialogTitle id="statistics-title">Статистика</DialogTitle>
         <DialogContent dividers>
           <TableContainer component={Paper}>
-            <Table
-              // className={classes.table}
-              size="small"
-              aria-label="statistic table"
-            >
+            <Table size="small" aria-label="statistic table">
               <TableHead>
                 <TableRow>
                   <TableCell>Уровень</TableCell>

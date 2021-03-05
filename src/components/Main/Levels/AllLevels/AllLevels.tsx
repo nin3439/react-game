@@ -76,7 +76,7 @@ const AllLevels: React.FC<IlevelsProps> = ({ levels }) => {
             }}
           >
             <IconButton>
-              <Home />
+              <Home className="icon" />
             </IconButton>
           </Link>
         </Tooltip>

@@ -20,6 +20,7 @@ export const Levels: React.FC = () => {
           path="/level"
           render={() => <AllLevels levels={levels} />}
         />
+
         <Route
           path="/level/:number"
           render={() => <Level levels={levels} setLevels={setLevels} />}

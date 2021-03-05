@@ -67,7 +67,7 @@ const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
   useEffect(() => {
     if (level) {
       const levelProgress =
-        foundWords[level.id]?.length || 0 / level.includedWords.length;
+        foundWords[level.id]?.length / level.includedWords.length;
       if (levelProgress >= gameDifficulty!.levelDifficulty / 100) {
         setLevels((prev: any) => {
           return prev.map((item: any) => {
@@ -80,7 +80,7 @@ const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
       }
     }
     // eslint-disable-line react-hooks/exhaustive-deps
-  }, [level, gameDifficulty, foundWords]);
+  }, [level, foundWords]);
 
   if (!level) {
     return <span>Не найдено</span>;

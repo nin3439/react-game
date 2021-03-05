@@ -117,7 +117,7 @@ export const LevelHeader: React.FC<ILevelProps> = ({
             }}
           >
             <IconButton>
-              <ArrowBackIos />
+              <ArrowBackIos className="icon" />
             </IconButton>
           </Link>
         </Tooltip>
@@ -139,7 +139,7 @@ export const LevelHeader: React.FC<ILevelProps> = ({
                 }}
               >
                 <IconButton>
-                  <ArrowForwardIos />
+                  <ArrowForwardIos className="icon" />
                 </IconButton>
               </Link>
             </Tooltip>
@@ -163,7 +163,7 @@ export const LevelHeader: React.FC<ILevelProps> = ({
           }}
         >
           <IconButton>
-            <Menu />
+            <Menu className="icon" />
           </IconButton>
         </Link>
       </Tooltip>

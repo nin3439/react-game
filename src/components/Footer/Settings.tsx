@@ -70,7 +70,7 @@ export const SettingsComponent: React.FC<ISettingsProps> = ({
             playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
           }}
         >
-          <Settings />
+          <Settings className="icon" />
         </IconButton>
       </Tooltip>
 
@@ -81,12 +81,7 @@ export const SettingsComponent: React.FC<ISettingsProps> = ({
       >
         <DialogTitle id="settings-title">Настройки игры</DialogTitle>
         <DialogContent dividers>
-          <Grid
-            container
-            direction="row"
-            // justify="space-between"
-            alignItems="center"
-          >
+          <Grid container direction="row" alignItems="center">
             <Typography id="music-slider" gutterBottom>
               Музыка
             </Typography>
