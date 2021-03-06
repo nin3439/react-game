@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { LevelHeader } from './LevelComponents/LevelHeader';
-import { SmallWords } from './LevelComponents/SmallWords';
-import { MainWord } from './LevelComponents/MainWord';
+import { LevelHeader } from './LevelComponents/LevelHeader/LevelHeader';
+import { SmallWords } from './LevelComponents/SmallWords/SmallWords';
+import { MainWord } from './LevelComponents/MainWord/MainWord';
 import { mockLevels } from '../../../../constants/levelsContent';
 import { Grid } from '@material-ui/core';
 import { useStateWithLocalStorage } from '../../../../utils/utils';
@@ -110,6 +110,7 @@ const Level: React.FC<IlevelsProps> = ({ setLevels, levels }) => {
         <Grid item>
           <MainWord
             levelId={level.id}
+            coins={coins}
             setCoins={setCoins}
             word={level.word}
             includedWords={level.includedWords}

@@ -6,11 +6,23 @@ import styled from 'styled-components';
 const StyledFooterGrid = styled(Grid)`
   padding: 0 30px;
   height: 75px;
+  @media (max-width: 550px) {
+    padding: 0 5px;
+  }
+`;
+
+const StyledTypography = styled(Typography)`
+  @media (max-width: 450px) {
+    font-size: 14px;
+  }
 `;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
   margin: 0 10px;
+  @media (max-width: 450px) {
+    margin: 0 5px;
+  }
 `;
 
 interface IFooterProps {
@@ -48,7 +60,7 @@ const Footer: React.FC<IFooterProps> = ({
         style={{ width: '350px' }}
       >
         {' '}
-        <Typography color="textPrimary" variant="body1" align="center">
+        <StyledTypography color="textPrimary" variant="body1" align="center">
           Игра создана
           <StyledLink href="https://github.com/nin3439">nin3439</StyledLink>
           для
@@ -62,7 +74,7 @@ const Footer: React.FC<IFooterProps> = ({
             />
           </Link>
           2021
-        </Typography>
+        </StyledTypography>
       </Grid>
     </StyledFooterGrid>
   );

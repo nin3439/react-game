@@ -20,6 +20,9 @@ import styled from 'styled-components';
 const StyledGrid = styled(Grid)`
   height: calc(100vh - 135px);
   row-gap: 25px;
+  @media (max-width: 550px) {
+    row-gap: 10px;
+  }
 `;
 
 const StyledTypography = styled(Typography)`
@@ -32,6 +35,10 @@ const StyledTypography = styled(Typography)`
   }
   @media (max-width: 800px) {
     font-size: 66px;
+  }
+  @media (max-width: 550px) {
+    font-size: 56px;
+    text-align: center;
   }
 `;
 

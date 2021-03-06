@@ -47,6 +47,11 @@ const StyledButton = styled(Button)`
     height: 17vh;
     margin: 4px;
   }
+  @media (max-width: 550px) {
+    width: 20vw;
+    height: 13vh;
+    margin: 1px;
+  }
 `;
 
 interface Ilevel {

@@ -15,18 +15,18 @@ import { Menu, ArrowBackIos, ArrowForwardIos } from '@material-ui/icons/';
 import {
   getNumberOfRemainingWords,
   playSound,
-} from '../../../../../utils/utils';
+} from '../../../../../../utils/utils';
 import { Statistics } from './Statistics';
-import { useSound } from '../../../../../context/SoundContext';
+import { useSound } from '../../../../../../context/SoundContext';
 import styled from 'styled-components';
-import Dollar from '../../../../../assets/dollar.png';
-import { useGameDifficulty } from '../../../../../context/GameDifficultyContext';
+import Dollar from '../../../../../../assets/dollar.png';
+import { useGameDifficulty } from '../../../../../../context/GameDifficultyContext';
 
 const StyledGrid = styled(Grid)`
   height: 75px;
   padding: 15px 40px;
   @media (max-width: 550px) {
-    padding: 15px 20px;
+    padding: 15px 5px;
   }
 `;
 
@@ -41,6 +41,9 @@ const StyledNumberTypography = styled(Typography)`
   @media (max-width: 850px) {
     font-size: 16px;
   }
+  @media (max-width: 550px) {
+    font-size: 14px;
+  }
 `;
 
 const StyledLevelTypography = styled(Typography)`
@@ -49,6 +52,9 @@ const StyledLevelTypography = styled(Typography)`
   }
   @media (max-width: 850px) {
     font-size: 16px;
+  }
+  @media (max-width: 550px) {
+    font-size: 14px;
   }
 `;
 
@@ -59,6 +65,9 @@ const StyledCoinsTypography = styled(Typography)`
   }
   @media (max-width: 850px) {
     font-size: 16px;
+  }
+  @media (max-width: 550px) {
+    font-size: 14px;
   }
 `;
 

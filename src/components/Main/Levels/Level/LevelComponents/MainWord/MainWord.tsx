@@ -6,10 +6,11 @@ import {
   CheckCircleOutline,
 } from '@material-ui/icons';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useSound } from '../../../../../context/SoundContext';
-import { playSound } from '../../../../../utils/utils';
-import styled, { css } from 'styled-components';
+import { useSound } from '../../../../../../context/SoundContext';
+import { playSound } from '../../../../../../utils/utils';
 import { Messages } from './Messages';
+import { Clue } from './Clue';
+import styled, { css } from 'styled-components';
 
 const StyledInput = styled(Typography)`
   height: 10vh;
@@ -62,10 +63,11 @@ const StyledButton = styled(Button)`
 
 interface ILevelProps {
   levelId: number;
+  coins: number;
   setCoins: (coins: any) => void;
   word: string;
   includedWords: string[];
-  foundWords: any;
+  foundWords: string[];
   setFoundWords: (foundWords: any) => void;
 }
 
@@ -88,6 +90,7 @@ const getLetters = (word: string) =>
 
 export const MainWord: React.FC<ILevelProps> = ({
   levelId,
+  coins,
   setCoins,
   word,
   includedWords,
@@ -106,7 +109,9 @@ export const MainWord: React.FC<ILevelProps> = ({
 
   const checkWord = () => {
     if (includedWords.includes(input)) {
-      setCoins((prev: any) => prev + input.length);
+      setCoins((prev: any) =>
+        foundWords?.includes(input) ? prev : prev + input.length
+      );
       setHistoryPressLetter([]);
       setLetter((prev: ILetterProps[]) => {
         return prev.map((item: ILetterProps) => {
@@ -117,10 +122,12 @@ export const MainWord: React.FC<ILevelProps> = ({
       setTimeout(() => {
         setIsMessageOpen(false);
         setInput('');
-        setFoundWords((prev: IFoundWords) => ({
-          ...prev,
-          [levelId]: [...prev[levelId], input],
-        }));
+        if (!foundWords?.includes(input)) {
+          setFoundWords((prev: IFoundWords) => ({
+            ...prev,
+            [levelId]: [...prev[levelId], input],
+          }));
+        }
       }, 1000);
     } else {
       setIsMessageOpen(true);
@@ -232,13 +239,15 @@ export const MainWord: React.FC<ILevelProps> = ({
                 checkWord();
                 playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
               }}
+              style={{
+                marginTop: '30px',
+              }}
             >
               <CheckCircleOutline
                 style={{
                   color: 'green',
                   height: '5vh',
                   width: '5vw',
-                  marginTop: '30px',
                 }}
               />
             </Button>
@@ -249,13 +258,15 @@ export const MainWord: React.FC<ILevelProps> = ({
                 removeLastLetter();
                 playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
               }}
+              style={{
+                marginTop: '30px',
+              }}
             >
               <BackspaceOutlined
                 style={{
                   color: 'rosybrown',
                   height: '5vh',
                   width: '5vw',
-                  marginTop: '30px',
                 }}
               />
             </Button>
@@ -266,17 +277,25 @@ export const MainWord: React.FC<ILevelProps> = ({
                 clearInput();
                 playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
               }}
+              style={{
+                marginTop: '30px',
+              }}
             >
               <HighlightOff
                 style={{
                   color: 'firebrick',
                   height: '5vh',
                   width: '5vw',
-                  marginTop: '30px',
                 }}
               />
             </Button>
           </Tooltip>
+          <Clue
+            includedWords={includedWords}
+            foundWords={foundWords}
+            coins={coins}
+            setCoins={setCoins}
+          />
         </Box>
       </Grid>
     </Grid>

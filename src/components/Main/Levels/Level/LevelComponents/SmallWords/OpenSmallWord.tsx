@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState } from 'react';
 import {
   Typography,
   Button,
@@ -8,9 +8,9 @@ import {
   DialogContent,
   DialogTitle,
 } from '@material-ui/core';
-import { dictionary } from '../../../../../constants/dictionary';
-import { useSound } from '../../../../../context/SoundContext';
-import { playSound } from '../../../../../utils/utils';
+import { dictionary } from '../../../../../../constants/dictionary';
+import { useSound } from '../../../../../../context/SoundContext';
+import { playSound } from '../../../../../../utils/utils';
 import styled from 'styled-components';
 
 const StyledTypography = styled(Typography)`

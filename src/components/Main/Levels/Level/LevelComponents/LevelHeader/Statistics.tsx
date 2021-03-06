@@ -16,10 +16,9 @@ import {
   Paper,
 } from '@material-ui/core';
 import { Equalizer } from '@material-ui/icons/';
-import { playSound } from '../../../../../utils/utils';
-import { useSound } from '../../../../../context/SoundContext';
-import { mockLevels } from '../../../../../constants/levelsContent';
-import '../../../../../index.css';
+import { playSound } from '../../../../../../utils/utils';
+import { useSound } from '../../../../../../context/SoundContext';
+import { mockLevels } from '../../../../../../constants/levelsContent';
 
 interface IStatisticsProps {
   foundWords: any;
@@ -32,6 +31,7 @@ export const Statistics: React.FC<IStatisticsProps> = ({ foundWords }) => {
   const handleClickOpen = () => {
     setIsStatisticsOpen(true);
   };
+
   const handleClose = () => {
     setIsStatisticsOpen(false);
   };
