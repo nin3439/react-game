@@ -1,0 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.icon:hover {
+  border-radius: 50%;
+  background: #cccccc70;
+  transition: all 0.5s;
+}

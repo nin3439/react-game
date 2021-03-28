@@ -1,0 +1,81 @@
+import React, { useState } from 'react';
+import {
+  Button,
+  DialogTitle,
+  Dialog,
+  Typography,
+  DialogContent,
+  DialogActions,
+  Box,
+} from '@material-ui/core/';
+import { useSound } from '../../context/SoundContext';
+import { playSound } from '../../utils/utils';
+
+const Rules = () => {
+  const [open, setOpen] = useState(false);
+  const sound = useSound();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Box>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          handleClickOpen();
+          playSound(sound!.volumeSound, 'letters', sound!.isSoundOn);
+        }}
+      >
+        Правила
+      </Button>
+      <Dialog onClose={handleClose} aria-labelledby="rules" open={open}>
+        <DialogTitle id="rules-title">Правила игры</DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Слова могут быть существительными в единственном числе, а также во
+            множественном числе, если такие слова не существуют в единственном
+            (например: дрова, вилы, очки), без уменьшительно-ласкательных.
+          </Typography>
+          <Typography gutterBottom>Все бувкы Ё заменены на буквы Е.</Typography>
+          <Typography gutterBottom>
+            Чтобы открыть следующий уровень, необходимо угадать определенное
+            количество слов текущего уровня (количество указано слева сверху).
+          </Typography>
+          <Typography gutterBottom>
+            За угаданные слова начисляются монеты (по количеству букв в
+            угаданном слове).
+          </Typography>
+          <Typography gutterBottom>
+            Монеты можно использовать для получения подсказки, для этого нужно
+            нажать на иконку с подсказкой. Стоимость одной подсказки 5 монет.
+          </Typography>
+          <Typography gutterBottom>
+            Если нажать на одно из угаданных слов, появится окно со значением
+            этого слова.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            autoFocus
+            onClick={() => {
+              handleClose();
+              playSound(sound!.volumeSound, 'btns', sound!.isSoundOn);
+            }}
+            color="primary"
+          >
+            Ок
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
+};
+
+export default Rules;
