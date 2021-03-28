@@ -1,7 +1,7 @@
 import React from 'react';
 import { Levels } from './Levels/Levels';
 import { Home } from './Home/Home';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, HashRouter } from 'react-router-dom';
 
 interface IMainProps {
   isThemeDark: boolean;
@@ -10,7 +10,7 @@ interface IMainProps {
 
 export const Main: React.FC<IMainProps> = ({ isThemeDark, setIsThemeDark }) => {
   return (
-    <>
+    <HashRouter>
       <Switch>
         <Route
           exact
@@ -21,6 +21,6 @@ export const Main: React.FC<IMainProps> = ({ isThemeDark, setIsThemeDark }) => {
         />
         <Route path="/level" component={Levels} />
       </Switch>
-    </>
+    </HashRouter>
   );
 };
